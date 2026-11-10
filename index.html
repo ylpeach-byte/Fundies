@@ -20,7 +20,7 @@ main{width:min(1120px,calc(100% - 36px));margin:auto; padding:70px 0}
 h1{font-size:clamp(64px,11vw,148px);line-height:.95;letter-spacing:-.07em;margin:16px 0}
 h1 span{color:var(--lime)}
 .subtitle{color:#c8d9cc;font-size:clamp(17px,2vw,23px);max-width:720px;line-height:1.45;margin:24px 0 46px}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 a.card{display:flex;flex-direction:column;min-height:260px;padding:33px;text-decoration:none;color:inherit;background:linear-gradient(135deg,#194b34,#0e3022);border:1px solid #52785d;border-radius:23px;transition:transform .15s,border-color .15s}
 a.card:hover,a.card:focus-visible{transform:translateY(-4px);border-color:var(--lime);outline:none}
 .num{color:var(--lime);font-size:13px;letter-spacing:.2em;font-weight:900}
@@ -29,7 +29,7 @@ a.card:hover,a.card:focus-visible{transform:translateY(-4px);border-color:var(--
 .open{margin-top:auto;padding-top:32px;color:var(--lime);font-weight:900}
 footer{padding:23px 20px;text-align:center;border-top:1px solid #ffffff25;color:var(--muted);font-size:12px;line-height:1.8}
 footer strong{color:#fff}
-@media(max-width:690px){main{padding:45px 0}.cards{grid-template-columns:1fr}.card{min-height:225px!important}}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}@media(max-width:690px){main{padding:45px 0}.cards{grid-template-columns:1fr}.card{min-height:225px!important}}
 </style>
 </head>
 <body>
@@ -48,6 +48,11 @@ footer strong{color:#fff}
 <span class="num">02 / MAT WRESTLING</span><h2>Top/Bottom Fundies</h2>
 <p>5 drills · 30–45 second rounds<br>Interactive countdown timers</p>
 <span class="open">OPEN PRESENTATION →</span>
+</a>
+<a class="card" href="./practice_timers.html">
+<span class="num">03 / COACHING TOOL</span><h2>Practice Timers</h2>
+<p>8 selectable countdowns · 10 seconds to 2 minutes<br>Automatic buzzer at zero</p>
+<span class="open">OPEN TIMERS →</span>
 </a>
 </section>
 </main>
