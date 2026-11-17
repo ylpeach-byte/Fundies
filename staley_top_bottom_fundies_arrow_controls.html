@@ -18,34 +18,14 @@ const slides=[
 let startedOnSlide=false;let phase="A";let index=0, remaining=0, running=false, deadline=0, tickHandle=null, soundEnabled=true, audioCtx=null;const $=s=>document.querySelector(s);const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));function fmt(s){s=Math.max(0,Math.ceil(s));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}function stop(){running=false;if(tickHandle)clearInterval(tickHandle);tickHandle=null}function tone(){
  if(!soundEnabled)return;
  try{
-  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-  const ac=audioCtx;if(!ac)return;ac.resume();
-  const t=ac.currentTime+.02,d=1.05;
-  const master=ac.createGain();master.gain.setValueAtTime(.0001,t);
-  master.gain.exponentialRampToValueAtTime(.90,t+.035);
-  master.gain.setValueAtTime(.90,t+d-.16);
-  master.gain.exponentialRampToValueAtTime(.0001,t+d);
-  const limiter=ac.createDynamicsCompressor();limiter.threshold.value=-9;limiter.knee.value=3;limiter.ratio.value=12;limiter.attack.value=.003;limiter.release.value=.12;master.connect(limiter);limiter.connect(ac.destination);
-  const mod=ac.createOscillator(),mg=ac.createGain();
-  mod.type='sine';mod.frequency.value=27;mg.gain.value=65;
-  mod.connect(mg);mod.start(t);mod.stop(t+d);
-  for(const [freq,vol] of [[2550,.58],[3150,.22]]){
-   const osc=ac.createOscillator(),gain=ac.createGain();
-   osc.type='sine';osc.frequency.setValueAtTime(freq-180,t);
-   osc.frequency.exponentialRampToValueAtTime(freq,t+.09);
-   mg.connect(osc.frequency);
-   gain.gain.value=vol;osc.connect(gain);gain.connect(master);
-   osc.start(t);osc.stop(t+d);
+  if(!window.toneAudio){
+   const a=new Audio('./referee-whistle.wav');a.preload='auto';a.volume=1;
+   window.toneAudio=a;
   }
-  const len=Math.ceil(ac.sampleRate*d),buffer=ac.createBuffer(1,len,ac.sampleRate);
-  const data=buffer.getChannelData(0);
-  for(let i=0;i<len;i++)data[i]=Math.random()*2-1;
-  const noise=ac.createBufferSource();noise.buffer=buffer;
-  const filter=ac.createBiquadFilter();filter.type='bandpass';filter.frequency.value=2850;filter.Q.value=1.8;
-  const ng=ac.createGain();ng.gain.value=.12;
-  noise.connect(filter);filter.connect(ng);ng.connect(master);
-  noise.start(t);noise.stop(t+d);
- }catch(e){console.warn(e)}
+  const a=window.toneAudio;
+  a.pause();a.currentTime=0;
+  const result=a.play();if(result&&result.catch)result.catch(err=>console.warn('Whistle playback:',err));
+ }catch(err){console.warn('Whistle playback:',err)}
 }function updateTimer(){const t=$('#clock');if(!t)return;t.textContent=fmt(remaining);t.classList.toggle('finished',remaining===0);const btn=$('#play');if(btn)btn.textContent=running?'Ⅱ Pause':phase==='switch'?'▶ Start B':phase==='done'?'↺ Restart A':`▶ Start ${phase}`;const ring=$('#timerstatus');if(ring)ring.textContent=running?`WRESTLER ${phase} · COUNTING DOWN`:phase==='switch'?'REPOSITION · PRESS → TO START B':phase==='done'?'BOTH WRESTLERS COMPLETE':`WRESTLER ${phase} · READY`;const who=$('#wrestlerphase');if(who){who.textContent=phase==='switch'?'SWITCH WRESTLERS':phase==='done'?'DRILL COMPLETE':`WRESTLER ${phase}`;who.classList.toggle('switching',phase==='switch');}const next=$('#next');if(next&&slides[index].duration)next.textContent=phase==='done'?'Next Drill →':phase==='switch'?'Start Wrestler B →':running?'Timer Running':'Start / Resume →';}
 function countdown(){if(!running)return;remaining=Math.max(0,(deadline-performance.now())/1000);if(remaining===0){stop();tone();phase=phase==='A'?'switch':'done'}updateTimer()}
 function playPause(){let d=slides[index];if(!d.duration)return;startedOnSlide=true;if(running){remaining=Math.max(0,(deadline-performance.now())/1000);stop()}else{if(phase==='done'){phase='A';remaining=d.duration}else if(phase==='switch'){phase='B';remaining=d.duration}if(remaining<=0)remaining=d.duration;deadline=performance.now()+remaining*1000;running=true;if(remaining===d.duration)tone();tickHandle=setInterval(countdown,60)}updateTimer()}
@@ -81,36 +61,30 @@ function buildRole(name,actions,cl=''){return `<div class="role ${cl}"><div clas
 </script>
 
 <script>
-/* Mobile Safari/Chrome: activate Web Audio directly inside a real user gesture.
-   Keep the same AudioContext alive for automatic end-of-round whistles. */
+/* A real WAV file plays through HTMLAudioElement on iOS, Android, and desktop.
+   A user gesture primes the same audio element for automatic timer-end playback. */
 (function(){
-  function unlockWhistle(){
-    try {
-      const C=window.AudioContext||window.webkitAudioContext;
-      if(!C)return;
-      if(!audioCtx)audioCtx=new C();const ac=audioCtx;
-      if(!ac)return;
-      if(ac.state==='suspended')ac.resume().catch(()=>{});
-      // A near-silent buffer source starts during the user gesture to prime iOS audio.
-      const buffer=ac.createBuffer(1,1,ac.sampleRate);
-      const source=ac.createBufferSource();source.buffer=buffer;
-      const gain=ac.createGain();gain.gain.value=0;
-      source.connect(gain);gain.connect(ac.destination);source.start(0);
-    } catch(e){console.warn('Whistle audio activation:',e)}
-  }
-  document.addEventListener('pointerdown',unlockWhistle,{capture:true,passive:true});
-  document.addEventListener('touchstart',unlockWhistle,{capture:true,passive:true});
-  document.addEventListener('keydown',unlockWhistle,{capture:true});
-  const soundButton=document.getElementById('sound');
-  if(soundButton){
-    const test=document.createElement('button');
-    test.type='button';test.textContent='♫ Test Whistle';
-    test.className='iconbtn';
-    test.title='Tap to hear the referee whistle and enable mobile audio';
-    test.setAttribute('aria-label','Test referee whistle');
-    test.addEventListener('click',()=>{unlockWhistle();tone()});
-    soundButton.insertAdjacentElement('afterend',test);
-  }
+ const a=new Audio('./referee-whistle.wav');a.preload='auto';a.volume=1;
+ window.staleyWhistleAudio=a;
+ let primed=false;
+ function prime(){
+   if(primed)return;primed=true;
+   const oldVolume=a.volume;a.volume=0;
+   const p=a.play();
+   if(p&&p.then)p.then(()=>{a.pause();a.currentTime=0;a.volume=oldVolume;}).catch(()=>{primed=false;a.volume=oldVolume;});
+   else {a.pause();a.currentTime=0;a.volume=oldVolume;}
+ }
+ document.addEventListener('touchstart',prime,{capture:true,once:true,passive:true});
+ document.addEventListener('pointerdown',prime,{capture:true,once:true,passive:true});
+ document.addEventListener('keydown',prime,{capture:true,once:true});
+ const soundButton=document.getElementById('sound');
+ if(soundButton){
+   const test=document.createElement('button');test.type='button';
+   test.className='control';test.textContent='♫ Test Whistle';
+   test.setAttribute('aria-label','Test referee whistle');
+   test.addEventListener('click',()=>{primed=true;tone();});
+   soundButton.insertAdjacentElement('afterend',test);
+ }
 })();
 </script>
 </body></html>
