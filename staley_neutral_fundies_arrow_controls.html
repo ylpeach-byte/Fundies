@@ -77,4 +77,38 @@ let startedOnSlide=false;let index=0, remaining=0, running=false, deadline=0, ti
  },true);
 })();
 </script>
+
+<script>
+/* Mobile Safari/Chrome: activate Web Audio directly inside a real user gesture.
+   Keep the same AudioContext alive for automatic end-of-round whistles. */
+(function(){
+  function unlockWhistle(){
+    try {
+      const C=window.AudioContext||window.webkitAudioContext;
+      if(!C)return;
+      if(!audioCtx)audioCtx=new C();const ac=audioCtx;
+      if(!ac)return;
+      if(ac.state==='suspended')ac.resume().catch(()=>{});
+      // A near-silent buffer source starts during the user gesture to prime iOS audio.
+      const buffer=ac.createBuffer(1,1,ac.sampleRate);
+      const source=ac.createBufferSource();source.buffer=buffer;
+      const gain=ac.createGain();gain.gain.value=0;
+      source.connect(gain);gain.connect(ac.destination);source.start(0);
+    } catch(e){console.warn('Whistle audio activation:',e)}
+  }
+  document.addEventListener('pointerdown',unlockWhistle,{capture:true,passive:true});
+  document.addEventListener('touchstart',unlockWhistle,{capture:true,passive:true});
+  document.addEventListener('keydown',unlockWhistle,{capture:true});
+  const soundButton=document.getElementById('sound');
+  if(soundButton){
+    const test=document.createElement('button');
+    test.type='button';test.textContent='♫ Test Whistle';
+    test.className='iconbtn';
+    test.title='Tap to hear the referee whistle and enable mobile audio';
+    test.setAttribute('aria-label','Test referee whistle');
+    test.addEventListener('click',()=>{unlockWhistle();tone()});
+    soundButton.insertAdjacentElement('afterend',test);
+  }
+})();
+</script>
 </body></html>
