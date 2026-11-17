@@ -17,22 +17,22 @@ header{padding:26px clamp(20px,5vw,75px);border-bottom:1px solid #ffffff25;displ
 .logo{border:2px solid var(--lime);border-radius:12px;width:47px;height:47px;display:grid;place-items:center;font-size:27px;font-weight:900;color:var(--lime)}
 .brand small{display:block;font-weight:800;letter-spacing:.2em;color:var(--lime);font-size:12px}
 .brand strong{display:block;font-size:20px}
-main{width:min(1120px,calc(100% - 36px));margin:auto; padding:70px 0}
+main{width:min(1120px,calc(100% - 36px));margin:auto; padding:42px 0 48px}
 .kicker{color:var(--lime);font-weight:850;letter-spacing:.2em;font-size:13px}
-h1{font-size:clamp(64px,11vw,148px);line-height:.95;letter-spacing:-.07em;margin:16px 0}
+h1{font-size:clamp(56px,8vw,104px);line-height:.95;letter-spacing:-.07em;margin:12px 0}
 h1 span{color:var(--lime)}
-.subtitle{color:#c8d9cc;font-size:clamp(17px,2vw,23px);max-width:720px;line-height:1.45;margin:24px 0 46px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-a.card{display:flex;flex-direction:column;min-height:260px;padding:33px;text-decoration:none;color:inherit;background:linear-gradient(135deg,#194b34,#0e3022);border:1px solid #52785d;border-radius:23px;transition:transform .15s,border-color .15s}
+.subtitle{color:#c8d9cc;font-size:clamp(17px,2vw,23px);max-width:720px;line-height:1.45;margin:16px 0 22px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+a.card{display:flex;flex-direction:column;min-height:195px;padding:25px;text-decoration:none;color:inherit;background:linear-gradient(135deg,#194b34,#0e3022);border:1px solid #52785d;border-radius:23px;transition:transform .15s,border-color .15s}
 a.card:hover,a.card:focus-visible{transform:translateY(-4px);border-color:var(--lime);outline:none}
 .num{color:var(--lime);font-size:13px;letter-spacing:.2em;font-weight:900}
-.card h2{font-size:clamp(29px,3.5vw,43px);letter-spacing:-.04em;margin:22px 0 12px}
+.card h2{font-size:clamp(26px,3vw,36px);letter-spacing:-.04em;margin:13px 0 8px}
 .card p{color:var(--muted);font-size:16px;line-height:1.45;margin:0}
-.open{margin-top:auto;padding-top:32px;color:var(--lime);font-weight:900}
+.open{margin-top:auto;padding-top:17px;color:var(--lime);font-weight:900}
 footer{padding:23px 20px;text-align:center;border-top:1px solid #ffffff25;color:var(--muted);font-size:12px;line-height:1.8}
 footer strong{color:#fff}
 @media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}@media(max-width:690px){main{padding:45px 0}.cards{grid-template-columns:1fr}.card{min-height:225px!important}}
- .card.remote-active{outline:4px solid #c9ed6a;outline-offset:4px;background:#1d4e36}.remote-tip{color:#c9ed6a;font-weight:750;font-size:14px;margin:15px 0 22px} </style>
+ .card.remote-active{outline:4px solid #c9ed6a;outline-offset:4px;background:#1d4e36}.remote-tip{color:#c9ed6a;font-weight:750;font-size:14px;margin:12px 0 18px} </style>
 </head>
 <body>
 <header><div class="logo">S</div><div class="brand"><small>STALEY WRESTLING</small><strong>Fundamentals Library</strong></div></header>
@@ -40,7 +40,7 @@ footer strong{color:#fff}
 <div class="kicker">PRACTICE PRESENTATIONS</div>
 <h1>WRESTLING<br><span>FUNDIES.</span></h1>
 <p class="subtitle">Choose a fundamentals session. Introduce each drill, then start the countdown when your wrestlers are ready.</p>
-<p class="remote-tip">REMOTE: ← / → highlight a tool · Square / Enter to open · Double ← returns home from any tool</p><section class="cards" aria-label="Fundies presentations">
+<p class="remote-tip">REMOTE: ↑ / ↓ highlight a tool · Square / Enter to open · Double ↑ returns home from any tool</p><section class="cards" aria-label="Fundies presentations">
 <a class="card" href="./staley_neutral_fundies_arrow_controls.html">
 <span class="num">01 / NEUTRAL</span><h2>Neutral Fundies</h2>
 <p>7 drills · 30–45 second rounds<br>Interactive countdown timers</p>
