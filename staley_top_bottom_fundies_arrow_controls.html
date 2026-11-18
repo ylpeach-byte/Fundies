@@ -40,7 +40,6 @@
 .stepaction{min-height:0;flex:1;font-size:clamp(26px,5.3vw,90px);font-weight:950;font-style:italic;letter-spacing:-.055em;line-height:1.03;padding:10px 15px;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:none}
 .sequence .stepcard:not(:last-child):after{display:none}
 .sequence .stepcard:nth-child(odd):not(:last-child):after{content:'➜';display:block;position:absolute;right:calc(-1 * clamp(37px,3.8vw,66px));top:50%;transform:translateY(-50%);font-size:clamp(32px,3vw,52px);color:#8bff42;text-shadow:0 3px 8px #0008;pointer-events:none}
-.sequence.four:before{content:'↙';position:absolute;z-index:3;left:49%;top:50%;transform:translate(-50%,-50%);font-size:clamp(28px,3vw,48px);line-height:1;color:#8bff42;text-shadow:0 3px 7px #000;pointer-events:none}
 .sequence-note{flex-shrink:0;font-size:clamp(16px,1.8vw,30px);font-style:italic;font-weight:950;color:#fff;letter-spacing:.015em;margin-top:clamp(8px,1.5vh,18px);text-shadow:0 2px 5px #0009}
 .footerstrip{position:static;min-height:42px;padding:8px 25px;background:transparent;border-top:1px solid #ffffff18}
 .footerstrip .focus{max-width:100%}
@@ -65,7 +64,6 @@
  .contentarea{margin-top:clamp(34px,5vh,55px)}
 }
 /* Keep the arrow from the top-right step to bottom-left readable. */
-.sequence.four:before{content:'↙';font-family:Arial,sans-serif;font-size:clamp(43px,4.1vw,72px);font-weight:900;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;line-height:1;color:#8bff42;-webkit-text-stroke:1px #0b351c;text-shadow:0 3px 8px #000b}
 /* Number circles remain above the card edges. */
 .stepnum{z-index:7}
 @media(max-width:850px){.contentarea{margin-top:clamp(28px,5vh,55px)}.sequence.four:before{font-size:clamp(26px,5vw,43px)}}
@@ -139,6 +137,21 @@
  .slide-content:has(.timerunit){display:flex;flex-direction:column}
  .slide-content:has(.timerunit)>.timerunit{order:-1;position:static;width:min(100%,390px);max-width:100%;margin:0 auto 16px;right:auto;top:auto}
  .slide-content:has(.timerunit)>.eyebrow,.slide-content:has(.timerunit)>.title,.slide-content:has(.timerunit)>.contentarea{order:0}
+}
+
+/* Draw the diagonal connector without relying on a system font glyph. */
+.sequence.four::before{
+ content:'';position:absolute;z-index:6;left:50%;top:50%;
+ width:clamp(18px,2.8vw,38px);height:clamp(11px,1.7vw,23px);
+ transform:translate(-50%,-50%) rotate(135deg);
+ background:#8bff42;clip-path:polygon(0 36%,63% 36%,63% 0,100% 50%,63% 100%,63% 64%,0 64%);
+ pointer-events:none
+}
+/* Constrain all card rows to the space between the header and the focus strip. */
+@media (min-width:851px){
+ .slide-content:has(.timerunit)>.contentarea{align-self:stretch}
+ .sequence{grid-auto-rows:minmax(0,1fr)}
+ .stepaction{overflow-wrap:anywhere}
 }
 </style></head><body><div class="app"><header class="topbar"><a class="brand" href="./index.html" title="Return to Fundies home" aria-label="Return to Staley Wrestling Fundies home"><div class="mark" aria-hidden="true">S</div><div><div class="brandtop">Staley Wrestling</div><div class="brandname">TOP/BOTTOM FUNDIES</div></div></a><div class="nav-right"><a class="remote-home" href="./index.html" aria-label="Return to practice tools home">⌂ HOME</a><span class="mini" id="topcount">SLIDE 1 / 7</span><button class="iconbtn" id="sound" title="Toggle whistle" aria-label="Toggle whistle">🔊 Sound</button><button class="iconbtn" id="fullscreen" title="Full screen">⛶ Full screen</button><button class="iconbtn" id="menu" title="Choose drill">☰ Drills</button></div></header><main class="main"><section class="slide" id="slide" aria-live="polite"></section></main><footer class="bottom"><div class="nextprev"><button class="navbtn" id="prev">← Previous</button><button class="navbtn primary" id="next">Next →</button></div><div class="progress" id="progress"></div><div class="copyright"><strong>© 2026 Staley Wrestling. All Rights Reserved.</strong><br>Staley High School Wrestling Program</div><div class="footlinks"><span class="hint">→ advance/start A/start B/next · ← previous · Space pause · R reset · F full screen</span></div></footer></div><div class="menuoverlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="menuheading"><div class="menubox"><div class="menutop"><h2 id="menuheading">Choose a drill</h2><button class="iconbtn" id="closemenu">✕ Close</button></div><div class="menuitems" id="menuitems"></div></div></div><script>
 // Drill language is taken from the original seven-slide Staley Top/Bottom Fundies Google Slides presentation.
