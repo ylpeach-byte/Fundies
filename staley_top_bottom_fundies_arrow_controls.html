@@ -37,7 +37,7 @@
 .stephead small{display:inline;font-style:normal;font-size:clamp(12px,1vw,17px);margin:0}
 .stepnum{z-index:4;top:-10px;left:-12px;right:auto;opacity:1;color:#fff;background:#06572e;border:4px solid #79ff37;border-radius:50%;width:clamp(54px,5vw,86px);height:clamp(54px,5vw,86px);display:grid;place-items:center;font-size:clamp(30px,3vw,54px);line-height:1;box-shadow:0 3px 10px #0008}
 .stepcard.b .stepnum{background:#303a35;border-color:#e4ebe5}
-.stepaction{min-height:0;flex:1;font-size:clamp(26px,5.3vw,90px);font-weight:950;font-style:italic;letter-spacing:-.055em;line-height:1.03;padding:10px 15px;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:none}
+.stepaction{min-height:0;flex:1;font-size:clamp(34px,4vw,64px);font-weight:900;letter-spacing:normal;line-height:1.12;padding:10px 15px;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:none}
 .sequence .stepcard:not(:last-child):after{display:none}
 .sequence .stepcard:nth-child(odd):not(:last-child):after{content:'➜';display:block;position:absolute;right:calc(-1 * clamp(37px,3.8vw,66px));top:50%;transform:translateY(-50%);font-size:clamp(32px,3vw,52px);color:#8bff42;text-shadow:0 3px 8px #0008;pointer-events:none}
 .sequence-note{flex-shrink:0;font-size:clamp(16px,1.8vw,30px);font-style:italic;font-weight:950;color:#fff;letter-spacing:.015em;margin-top:clamp(8px,1.5vh,18px);text-shadow:0 2px 5px #0009}
@@ -98,7 +98,7 @@
  .stephead{font-size:clamp(13px,3vw,20px);min-height:36px;padding:7px 6px 7px 25px}
  .stephead small{font-size:10px}
  .stepnum{width:39px;height:39px;font-size:22px;left:-8px;top:-9px;border-width:2px}
- .stepaction{min-height:108px;font-size:clamp(18px,4vw,32px);padding:10px 6px;line-height:1.06}
+ .stepaction{min-height:108px;font-size:clamp(18px,5.5vw,32px);padding:10px 6px}
  .sequence .stepcard:nth-child(odd):not(:last-child):after{right:-27px;font-size:29px;top:50%}
  .sequence.four:before{font-size:36px;left:50%;top:50%}
  .sequence-note{font-size:clamp(12px,2.8vw,16px);margin-top:15px;line-height:1.3}
@@ -152,8 +152,18 @@
  .slide-content:has(.timerunit)>.contentarea{align-self:stretch}
  .sequence{grid-auto-rows:minmax(0,1fr)}
 }
-.steptext{display:block;width:100%;min-width:0}
+.steptext{display:block;width:100%;min-width:0;word-spacing:.12em}
 .steptext > span{display:inline-block;white-space:nowrap}
+@media(min-width:851px) and (max-height:760px){
+ .timerunit{display:grid;grid-template-columns:minmax(0,1fr) minmax(74px,auto) auto;gap:6px;padding:7px 8px}
+ .timerunit .wrestlerphase{grid-column:1 / -1;padding:6px}
+ .timerunit .status{font-size:10px;white-space:normal}
+ .timerunit .time{font-size:42px}
+ .timerunit .start,.timerunit .reset{min-width:0;font-size:13px;padding:7px}
+ .slide-content:has(.timerunit)>.contentarea{margin-top:12px}
+ .stephead{min-height:34px;font-size:clamp(18px,2vw,26px);padding-block:4px}
+ .stepaction{padding-block:5px}
+}
 @media(max-width:850px){
  .intro .title{font-size:clamp(30px,10vw,76px)}
  .app{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
@@ -256,27 +266,37 @@ window.addEventListener('pagehide', reset);
 </script>
 
 <script>
-/* Fit each action to the largest readable font size that fits its own box. */
+/* Give all action cards the largest common type size that fits the slide. */
 (function(){
  function fit(){
-  document.querySelectorAll('.stepaction').forEach(card => {
-   const text = card.querySelector('.steptext');
-   const style = getComputedStyle(card);
-   const height = card.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-   const width = text.clientWidth;
-   if (height <= 0 || width <= 0) return;
+  const cards = [...document.querySelectorAll('.stepaction')];
+  if (!cards.length) return;
 
-   let smallest = 1;
-   let largest = Math.floor(Math.min(94, Math.max(24, width / 5)));
-   while (smallest < largest) {
-    const size = Math.ceil((smallest + largest) / 2);
-    text.style.fontSize = size + 'px';
-    const fits = text.scrollWidth <= width && text.offsetHeight <= height;
-    if (fits) smallest = size;
-    else largest = size - 1;
-   }
-   text.style.fontSize = smallest + 'px';
+  const isDesktop = window.matchMedia('(min-width:851px)').matches;
+  const boxes = cards.map(card => {
+   const style = getComputedStyle(card);
+   const text = card.querySelector('.steptext');
+   return {
+    text,
+    width: text.clientWidth,
+    height: isDesktop
+     ? card.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
+     : Infinity,
+   };
   });
+  if (boxes.some(({width,height}) => width <= 0 || height <= 0)) return;
+
+  let smallest = 1;
+  let largest = Math.floor(parseFloat(getComputedStyle(cards[0]).fontSize));
+  while (smallest < largest) {
+   const size = Math.ceil((smallest + largest) / 2);
+   boxes.forEach(({text}) => { text.style.fontSize = size + 'px'; });
+   const fits = boxes.every(({text,width,height}) =>
+    text.scrollWidth <= width && text.getBoundingClientRect().height <= height);
+   if (fits) smallest = size;
+   else largest = size - 1;
+  }
+  boxes.forEach(({text}) => { text.style.fontSize = smallest + 'px'; });
  }
  const slide=document.getElementById('slide');
  if(slide)new MutationObserver(fit).observe(slide,{childList:true,subtree:true});
