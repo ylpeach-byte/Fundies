@@ -197,7 +197,7 @@ function buildRole(name,actions,cl=''){return `<div class="role ${cl}"><div clas
 <script>
 (function(){
  let lastLeft=0,pending=null;
- const home=()=>{window.location.href='./index.html'};
+ const home=()=>document.querySelector('.remote-home').click();
  window.addEventListener('keydown',function(e){
   if(e.altKey||e.ctrlKey||e.metaKey)return;
   if(!['ArrowLeft','PageUp'].includes(e.key))return;
