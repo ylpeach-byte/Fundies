@@ -4,7 +4,42 @@
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#061a13"><title>Staley Wrestling | Practice Timers</title>
 <style>
 :root{--bg:#061a13;--lime:#c9ed6a;--muted:#b6cabe;--line:#43604f}*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 80% -20%,#236e49 0,transparent 55%),var(--bg);color:#f6faf5;font-family:Inter,Arial,Helvetica,sans-serif}button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--lime);outline-offset:3px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px clamp(18px,4vw,55px);border-bottom:1px solid #ffffff22;background:#061e16dd}.brand{display:flex;gap:12px;align-items:center}.mark{height:44px;width:44px;border:2px solid var(--lime);border-radius:11px;display:grid;place-items:center;font-size:27px;font-weight:900;color:var(--lime)}.brand small{display:block;color:var(--lime);font-size:11px;font-weight:850;letter-spacing:.18em}.brand strong{font-size:19px}.link{color:var(--lime);text-decoration:none;font-weight:800}.wrap{width:min(1130px,calc(100% - 32px));margin:0 auto;padding:38px 0 55px}.eyebrow{color:var(--lime);font-weight:850;font-size:12px;letter-spacing:.2em}.heading{font-size:clamp(37px,6vw,75px);letter-spacing:-.055em;line-height:1;margin:12px 0}.sub{color:var(--muted);font-size:clamp(15px,1.8vw,20px);line-height:1.45;margin:0 0 30px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.choice{border:1px solid #567662;background:#173e2c;color:#fff;border-radius:16px;padding:21px 10px;min-height:93px;font-size:clamp(22px,3vw,35px);font-weight:900;letter-spacing:-.04em}.choice:hover{background:#245c3f}.choice.selected{border:2px solid var(--lime);background:#315e3d;color:var(--lime)}.panel{margin-top:23px;background:linear-gradient(145deg,#16412f,#091e17);border:1px solid #52725d;border-radius:24px;padding:clamp(24px,4vw,44px);text-align:center}.status{color:var(--lime);font-size:clamp(13px,1.6vw,18px);font-weight:900;letter-spacing:.18em;min-height:24px}.clock{font-variant-numeric:tabular-nums;font-size:clamp(100px,19vw,230px);line-height:1.07;font-weight:900;letter-spacing:-.075em;margin:15px 0 24px}.clock.done{color:var(--lime)}.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.control{border:1px solid #ffffff4d;background:#ffffff10;color:#fff;border-radius:13px;padding:15px 25px;font-weight:850;min-width:135px}.control.primary{background:var(--lime);color:#10251a;border-color:var(--lime)}.control:disabled{opacity:.4;cursor:default}.hint{margin-top:20px;color:var(--muted);font-size:13px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:20px;border-top:1px solid #ffffff20} @media(max-width:620px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.choice{min-height:72px}.top{padding:14px}.brand strong{font-size:15px}.clock{font-size:clamp(78px,20vw,135px)}.control{min-width:95px;padding:13px}.wrap{padding-top:25px}}
- .brand{color:inherit;text-decoration:none;cursor:pointer}.brand:hover .brandname,.brand:hover strong{color:var(--lime)}.brand:focus-visible{outline:3px solid var(--lime);outline-offset:5px;border-radius:8px}.choice.remote-highlight{outline:4px solid #c9ed6a;outline-offset:3px;box-shadow:0 0 0 6px #c9ed6a28} .choice.selected.remote-highlight{box-shadow:0 0 0 6px #c9ed6a48}.modes{display:flex;gap:12px;margin:20px 0}.mode{flex:1;padding:17px;border:1px solid #567662;border-radius:14px;background:#173e2c;color:#fff;font-weight:900;font-size:20px}.mode.active{background:var(--lime);color:#10251a;border-color:var(--lime)}.phase{color:#f6faf5;font-size:clamp(20px,3vw,34px);font-weight:900;margin:8px 0}.phase-note{color:var(--muted);font-size:15px;min-height:22px}  .remote-home{display:inline-flex;align-items:center;justify-content:center;gap:6px;color:#10251a;background:#c9ed6a;border:2px solid #c9ed6a;border-radius:11px;padding:10px 15px;font-weight:900;text-decoration:none;white-space:nowrap}.remote-home:hover{background:#e2ff9d}.remote-home:focus-visible{outline:3px solid white;outline-offset:3px} </style></head><body><header class="top"><a class="brand" href="./index.html" title="Return to Fundies home" aria-label="Return to Staley Wrestling Fundies home"><div class="mark">S</div><div><small>STALEY WRESTLING</small><strong>PRACTICE TIMERS</strong></div></a><a class="remote-home" href="./index.html">⌂ HOME</a></header><main class="wrap"><div class="eyebrow">COACHING TOOLS / COUNTDOWN</div><h1 class="heading">PRACTICE <span style="color:var(--lime)">TIMERS.</span></h1><p class="sub">Choose Individual or Partner timers. Select a duration, then trigger each countdown. A loud referee-style whistle sounds at the start and end of every countdown.</p><div class="modes" role="group" aria-label="Timer mode"><button class="mode active" id="individual" aria-pressed="true">INDIVIDUAL</button><button class="mode" id="partner" aria-pressed="false">PARTNER</button></div><div class="grid" id="choices" aria-label="Choose timer duration"></div><section class="panel" aria-label="Current countdown"><div class="status" id="status" aria-live="polite">CHOOSE A TIMER</div><div class="phase" id="phase"></div><div class="phase-note" id="phaseNote"></div><div class="clock" id="clock" role="timer" aria-label="Time remaining">0:00</div><div class="controls"><button class="control primary" id="start" disabled>▶ Start</button><button class="control" id="pause" disabled>Ⅱ Pause</button><button class="control" id="restart" disabled>↺ Restart</button><button class="control" id="stop" disabled>■ Stop</button><button class="control" id="sound" aria-pressed="true">🔊 Sound On</button><button class="control" id="full">⛶ Full Screen</button></div><div class="hint">Remote arrows: highlight · Square / Tab / Enter: select, then trigger · R: restart</div></section></main><footer class="footer">© 2026 Staley Wrestling. All Rights Reserved. · Staley High School Wrestling Program</footer>
+ .brand{color:inherit;text-decoration:none;cursor:pointer}.brand:hover .brandname,.brand:hover strong{color:var(--lime)}.brand:focus-visible{outline:3px solid var(--lime);outline-offset:5px;border-radius:8px}.choice.remote-highlight{outline:4px solid #c9ed6a;outline-offset:3px;box-shadow:0 0 0 6px #c9ed6a28} .choice.selected.remote-highlight{box-shadow:0 0 0 6px #c9ed6a48}.modes{display:flex;gap:12px;margin:20px 0}.mode{flex:1;padding:17px;border:1px solid #567662;border-radius:14px;background:#173e2c;color:#fff;font-weight:900;font-size:20px}.mode.active{background:var(--lime);color:#10251a;border-color:var(--lime)}.phase{color:#f6faf5;font-size:clamp(20px,3vw,34px);font-weight:900;margin:8px 0}.phase-note{color:var(--muted);font-size:15px;min-height:22px}  .remote-home{display:inline-flex;align-items:center;justify-content:center;gap:6px;color:#10251a;background:#c9ed6a;border:2px solid #c9ed6a;border-radius:11px;padding:10px 15px;font-weight:900;text-decoration:none;white-space:nowrap}.remote-home:hover{background:#e2ff9d}.remote-home:focus-visible{outline:3px solid white;outline-offset:3px}
+.wrap { width: min(1450px, calc(100% - 32px)); padding-top: clamp(12px, 2vh, 24px); }
+.panel { margin-top: 0; padding: clamp(14px, 2.5vh, 30px) clamp(8px, 3vw, 40px); }
+.clock {
+  margin: 0 0 clamp(10px, 2vh, 22px);
+  color: #fff;
+  font-size: min(31vw, 41vh);
+  line-height: .98;
+  white-space: nowrap;
+}
+.phase:empty, .phase-note:empty { display: none; }
+.phase-note { min-height: 0; }
+.setup { margin-top: 24px; }
+.setup .heading { font-size: clamp(24px, 4vw, 42px); }
+.setup .sub { margin-bottom: 12px; }
+.setup .modes { margin: 12px 0; }
+.control { min-width: auto; padding: 10px clamp(10px, 2vw, 22px); }
+.hint { margin-top: 10px; }
+@media (orientation: landscape) {
+  .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .choice { min-height: 0; padding: clamp(6px, 1.5vh, 14px) 5px; font-size: clamp(15px, 2.25vw, 35px); }
+  :root:is(:fullscreen, .presentation-view) .top { padding-block: 8px; }
+  :root:is(:fullscreen, .presentation-view) .wrap { padding-block: 8px 16px; }
+  :root:is(:fullscreen, .presentation-view) .panel { padding-block: 10px; }
+  :root:is(:fullscreen, .presentation-view) .clock { font-size: min(30vw, 43vh); margin-bottom: 8px; }
+  :root:is(:fullscreen, .presentation-view) .setup { margin-top: 8px; }
+  :root:is(:fullscreen, .presentation-view) .setup .eyebrow,
+  :root:is(:fullscreen, .presentation-view) .setup .heading,
+  :root:is(:fullscreen, .presentation-view) .setup .sub,
+  :root:is(:fullscreen, .presentation-view) .hint,
+  :root:is(:fullscreen, .presentation-view) .footer { display: none; }
+  :root:is(:fullscreen, .presentation-view) .modes { margin-block: 0 8px; }
+  :root:is(:fullscreen, .presentation-view) .mode { padding: 7px; font-size: clamp(15px, 2.4vh, 23px); }
+  :root:is(:fullscreen, .presentation-view) .phase { margin-block: 2px; }
+}
+</style></head><body><header class="top"><a class="brand" href="./index.html" title="Return to Fundies home" aria-label="Return to Staley Wrestling Fundies home"><div class="mark">S</div><div><small>STALEY WRESTLING</small><strong>PRACTICE TIMERS</strong></div></a><a class="remote-home" href="./index.html">⌂ HOME</a></header><main class="wrap"><section class="panel" aria-label="Current countdown"><div class="status" id="status" aria-live="polite">CHOOSE A TIMER</div><div class="phase" id="phase"></div><div class="phase-note" id="phaseNote"></div><div class="clock" id="clock" role="timer" aria-label="Time remaining">0:00</div><div class="controls"><button class="control primary" id="start" disabled>▶ Start</button><button class="control" id="pause" disabled>Ⅱ Pause</button><button class="control" id="restart" disabled>↺ Restart</button><button class="control" id="stop" disabled>■ Stop</button><button class="control" id="sound" aria-pressed="true">🔊 Sound On</button><button class="control" id="full" aria-keyshortcuts="F" hidden>⛶ Full Screen</button></div><div class="hint">Remote arrows: highlight · Square / Tab / Enter: select, then trigger · R: restart</div></section><section class="setup" aria-label="Timer setup"><div class="eyebrow">COACHING TOOLS / COUNTDOWN</div><h1 class="heading">PRACTICE <span style="color:var(--lime)">TIMERS.</span></h1><p class="sub">Choose Individual or Partner timers. Select a duration, then trigger each countdown. A loud referee-style whistle sounds at the start and end of every countdown.</p><div class="modes" role="group" aria-label="Timer mode"><button class="mode active" id="individual" aria-pressed="true">INDIVIDUAL</button><button class="mode" id="partner" aria-pressed="false">PARTNER</button></div><div class="grid" id="choices" aria-label="Choose timer duration"></div></section></main><footer class="footer">© 2026 Staley Wrestling. All Rights Reserved. · Staley High School Wrestling Program</footer>
 <script src="./whistle.js"></script><script>
 'use strict';
 const durations=[['10 sec',10],['15 sec',15],['20 sec',20],['30 sec',30],['45 sec',45],['1 min',60],['1:30 min',90],['2:00 min',120],['4:00 min',240],['5:00 min',300],['6:00 min',360],['15:00 min',900]];
@@ -15,7 +50,8 @@ function clearTick(){whistle.cancel();if(interval!==null)clearInterval(interval)
 let mode='individual',phase='A',partnerFinished=false;
 function display(){
  const complete=chosen>0&&hasStarted&&remaining===0;
- $('clock').textContent=format(remaining);
+ const time=format(remaining);
+ if($('clock').textContent!==time)$('clock').textContent=time;
  $('clock').classList.toggle('done',complete);
  $('phase').textContent=mode==='partner'&&chosen?'WRESTLER '+phase:'';
  $('phaseNote').textContent=mode==='partner'&&chosen?(partnerFinished?'Round complete — ready for Wrestler A':phase==='B'&&!hasStarted?'Reposition wrestlers, then trigger B':''):'';
@@ -36,16 +72,51 @@ function restart(){if(!chosen)return;clearTick();phase='A';partnerFinished=false
 function stop(){clearTick();chosen=0;remaining=0;hasStarted=false;phase='A';partnerFinished=false;display()}
 function setMode(next){if(mode===next)return;clearTick();mode=next;phase='A';partnerFinished=false;hasStarted=false;remaining=chosen;display()}
 $('choices').innerHTML=durations.map(([name,seconds])=>`<button class="choice" data-seconds="${seconds}" aria-pressed="false">${name}</button>`).join('');
-document.querySelectorAll('.choice').forEach((b,i)=>b.addEventListener('click',()=>{highlighted=i;selectTimer(Number(b.dataset.seconds))}));
+document.querySelectorAll('.choice').forEach((button,index)=>button.addEventListener('click',event=>{
+ highlighted=index;
+ selectTimer(Number(button.dataset.seconds));
+ const panel=$('clock').closest('.panel');
+ if(event.detail>0&&panel.getBoundingClientRect().top<0)panel.scrollIntoView({block:'start'});
+}));
 if(new URLSearchParams(location.search).get('mode')==='partner')setMode('partner');
 $('individual').onclick=()=>setMode('individual');$('partner').onclick=()=>setMode('partner');
 $('start').onclick=trigger;$('pause').onclick=pauseResume;$('restart').onclick=restart;$('stop').onclick=stop;
 $('sound').onclick=()=>{soundOn=!soundOn;$('sound').textContent=soundOn?'🔊 Sound On':'🔇 Muted';$('sound').setAttribute('aria-pressed',String(soundOn));if(soundOn)whistle.unlock();else whistle.cancel()};
-$('full').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+const fullscreen=$('full');
+const root=document.documentElement;
+function updateFullscreen(){
+ const label=document.fullscreenElement?'Exit Full Screen':
+  root.classList.contains('presentation-view')?'Exit Presentation View':
+  document.fullscreenEnabled?'Full Screen':'Presentation View';
+ fullscreen.textContent='⛶ '+label;
+}
+async function toggleFullscreen(){
+ if(root.classList.contains('presentation-view')){
+  root.classList.remove('presentation-view');
+ }else if(document.fullscreenElement){
+  await document.exitFullscreen();
+ }else if(document.fullscreenEnabled){
+  try{await root.requestFullscreen()}
+  catch{root.classList.add('presentation-view')}
+ }else{
+  root.classList.add('presentation-view');
+ }
+ updateFullscreen();
+}
+fullscreen.hidden=false;
+fullscreen.addEventListener('click',toggleFullscreen);
+document.addEventListener('fullscreenchange',updateFullscreen);
+updateFullscreen();
 function activateHighlighted(){const seconds=durations[highlighted][1];if(chosen!==seconds){selectTimer(seconds)}else if(running){pauseResume()}else{trigger()}}
 function moveHighlight(delta){highlighted=(highlighted+delta+durations.length)%durations.length;display()}
 document.addEventListener('keydown',e=>{
  if(e.altKey||e.ctrlKey||e.metaKey)return;
+ if(e.key==='Escape'&&root.classList.contains('presentation-view')){
+  e.preventDefault();toggleFullscreen();return
+ }
+ if(e.key.toLowerCase()==='f'){
+  e.preventDefault();if(!e.repeat)toggleFullscreen();return
+ }
  const previous=['ArrowUp','ArrowLeft','PageUp'];const next=['ArrowDown','ArrowRight','PageDown'];
  if(previous.includes(e.key)||next.includes(e.key)){e.preventDefault();if(!e.repeat)moveHighlight(previous.includes(e.key)?-1:1);return}
  if(e.key==='Tab'||e.key==='Enter'||e.key==='NumpadEnter'||e.code==='Space'){

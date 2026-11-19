@@ -32,10 +32,41 @@ a.card:hover,a.card:focus-visible{transform:translateY(-4px);border-color:var(--
 footer{padding:23px 20px;text-align:center;border-top:1px solid #ffffff25;color:var(--muted);font-size:12px;line-height:1.8}
 footer strong{color:#fff}
 @media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}@media(max-width:690px){main{padding:45px 0}.cards{grid-template-columns:1fr}.card{min-height:225px!important}}
- .card.remote-active{outline:4px solid #c9ed6a;outline-offset:4px;background:#1d4e36}.remote-tip{color:#c9ed6a;font-weight:750;font-size:14px;margin:12px 0 18px} </style>
+ .card.remote-active{outline:4px solid #c9ed6a;outline-offset:4px;background:#1d4e36}.remote-tip{color:#c9ed6a;font-weight:750;font-size:14px;margin:12px 0 18px}
+.fullscreen {
+  margin-inline-start: auto;
+  padding: 10px 14px;
+  border: 1px solid #52785d;
+  border-radius: 10px;
+  background: #194b34;
+  color: var(--lime);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.fullscreen:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
+@media (max-width: 460px) {
+  header { padding: 15px 12px; gap: 9px; flex-wrap: wrap; }
+  .logo { flex: 0 0 36px; height: 36px; }
+  .brand small { font-size: 10px; }
+  .brand strong { font-size: 15px; }
+  .fullscreen { padding: 8px; }
+}
+@media (orientation: landscape) and (max-height: 820px) {
+  :root:is(:fullscreen, .presentation-view) header, :root:is(:fullscreen, .presentation-view) footer { padding-block: 12px; }
+  :root:is(:fullscreen, .presentation-view) main { padding-block: 20px; }
+  :root:is(:fullscreen, .presentation-view) h1 { font-size: clamp(42px, 8vh, 72px); }
+  :root:is(:fullscreen, .presentation-view) a.card { min-height: 140px; padding: 15px 18px; }
+  :root:is(:fullscreen, .presentation-view) .card h2 { margin-block: 7px 4px; }
+  :root:is(:fullscreen, .presentation-view) .open { padding-top: 8px; }
+}
+</style>
 </head>
 <body>
-<header><div class="logo">S</div><div class="brand"><small>STALEY WRESTLING</small><strong>Fundamentals Library</strong></div></header>
+<header><div class="logo">S</div><div class="brand"><small>STALEY WRESTLING</small><strong>Fundamentals Library</strong></div>
+<button class="fullscreen" id="fullscreen" type="button" title="Toggle fullscreen (F)" aria-keyshortcuts="F" hidden>Full Screen</button>
+</header>
 <main>
 <div class="kicker">PRACTICE PRESENTATIONS</div>
 <h1>WRESTLING<br><span>FUNDIES.</span></h1>
@@ -63,14 +94,52 @@ footer strong{color:#fff}
 <script>
 (function(){
  const cards=[...document.querySelectorAll('a.card')];let selected=0;
+ const fullscreen=document.getElementById('fullscreen');
+ const root=document.documentElement;
+ function updateFullscreen(){
+  const label=document.fullscreenElement?'Exit Full Screen':
+   root.classList.contains('presentation-view')?'Exit Presentation View':
+   document.fullscreenEnabled?'Full Screen':'Presentation View';
+  fullscreen.textContent=''+label;
+ }
+ async function toggleFullscreen(){
+  if(root.classList.contains('presentation-view')){
+   root.classList.remove('presentation-view');
+  }else if(document.fullscreenElement){
+   await document.exitFullscreen();
+  }else if(document.fullscreenEnabled){
+   try{await root.requestFullscreen()}
+   catch{root.classList.add('presentation-view')}
+  }else{
+   root.classList.add('presentation-view');
+  }
+  updateFullscreen();
+ }
+ fullscreen.hidden=false;
+ fullscreen.addEventListener('click',toggleFullscreen);
+ document.addEventListener('fullscreenchange',updateFullscreen);
+ updateFullscreen();
  function render(){cards.forEach((c,i)=>{c.classList.toggle('remote-active',i===selected);c.setAttribute('aria-current',i===selected?'true':'false')})}
  function move(n){selected=(selected+n+cards.length)%cards.length;render()}
  function open(){location.href=cards[selected].href}
  document.addEventListener('keydown',e=>{
   if(e.altKey||e.ctrlKey||e.metaKey)return;
-  if(['ArrowLeft','PageUp','ArrowUp'].includes(e.key)){e.preventDefault();if(!e.repeat)move(-1)}
-  else if(['ArrowRight','PageDown','ArrowDown'].includes(e.key)){e.preventDefault();if(!e.repeat)move(1)}
-  else if(['Tab','Enter',' '].includes(e.key)){e.preventDefault();if(!e.repeat)open()}
+  if(e.key==='Escape'&&root.classList.contains('presentation-view')){
+   e.preventDefault();toggleFullscreen();return
+  }
+  if(e.key.toLowerCase()==='f'){
+   e.preventDefault();if(!e.repeat)toggleFullscreen();return
+  }
+  const previous=['ArrowLeft','PageUp','ArrowUp'].includes(e.key);
+  if(previous||['ArrowRight','PageDown','ArrowDown'].includes(e.key)){
+   e.preventDefault();
+   if(e.target.closest('a,button'))e.target.blur();
+   if(!e.repeat)move(previous?-1:1);
+  }
+  else if(['Tab','Enter',' '].includes(e.key)){
+   if((e.shiftKey&&e.key==='Tab')||e.target.closest('a,button'))return;
+   e.preventDefault();if(!e.repeat)open()
+  }
  });
  render();
 })();
