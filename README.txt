@@ -1,0 +1,1 @@
+Upload referee-whistle.wav and index.html to repository root, replacing existing files. Audio is 1.5 seconds. Attribution is in homepage footer. Source: https://freesound.org/s/692545/ License: CC BY-NC 4.0 (noncommercial use only). Pages that reference referee-whistle.wav will use this sound; any synthesized audio paths require separate updates.
