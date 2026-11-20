@@ -1,9 +1,13 @@
-STALEY WRESTLING HOMEPAGE UPDATE
+STALEY WRESTLING - PROGRESSIONS UPDATE
 
-Upload ONLY index.html to the root of https://github.com/ylpeach-byte/Fundies on branch main, replacing the existing index.html.
+Upload these files to the ROOT of your GitHub Fundies repository (main branch):
+  offensive_progressions.html (REPLACE)
+  bottom_progressions.html (REPLACE)
+  referee-whistle.wav (REPLACE with the existing real recorded whistle used in prior site packages)
 
-This adds Offensive Progressions and Bottom Progressions to the original four homepage cards. The existing pages and assets are not included or modified.
+Offensive: Double removed, three progressions remain, no timer.
+Bottom: three clicks produce three actual whistle recordings per technique step; fourth click advances. Existing separate 45-second timer remains.
 
-After committing, visit https://www.staleywrestlingpracticetools.com and refresh. Check all six links and remote navigation.
+This ZIP does not alter index.html or the original Fundies/timer pages. The other pages must reference the same referee-whistle.wav to have identical sounds; this package does not automatically rewrite them.
 
-Note: This update is based on the latest available local homepage copy, not a live download of your current GitHub index.html, which was inaccessible from this environment. Compare before replacing if you have made newer homepage changes, especially fullscreen behavior.
+Upload individual files, not the ZIP itself. Commit and wait for GitHub Pages deployment.
