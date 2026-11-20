@@ -1,13 +1,9 @@
-STALEY WRESTLING - PROGRESSIONS UPDATE
+STALEY WRESTLING - USER WHISTLE UPDATE
 
-Upload these files to the ROOT of your GitHub Fundies repository (main branch):
-  offensive_progressions.html (REPLACE)
-  bottom_progressions.html (REPLACE)
-  referee-whistle.wav (REPLACE with the existing real recorded whistle used in prior site packages)
+Upload referee-whistle.wav to the ROOT of your Fundies GitHub repository, replacing the existing file. This is your supplied Whistle.m4a converted to WAV.
 
-Offensive: Double removed, three progressions remain, no timer.
-Bottom: three clicks produce three actual whistle recordings per technique step; fourth click advances. Existing separate 45-second timer remains.
+Upload offensive_progressions.html and bottom_progressions.html from this ZIP to the same root folder, replacing the existing versions.
 
-This ZIP does not alter index.html or the original Fundies/timer pages. The other pages must reference the same referee-whistle.wav to have identical sounds; this package does not automatically rewrite them.
+Existing pages that load ./referee-whistle.wav will automatically use the new recording. Pages that use generated oscillator tones or whistle.js may require separate code changes. We could not verify all live source files, so do not assume all pages are standardized yet.
 
-Upload individual files, not the ZIP itself. Commit and wait for GitHub Pages deployment.
+Keep index.html and other existing pages as they are. After deployment, hard-refresh and test sound on each page.
