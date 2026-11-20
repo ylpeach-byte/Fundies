@@ -1,5 +1,1 @@
-Staley Wrestling Progressions - No Timers
-
-Upload bottom_progressions.html and offensive_progressions.html to the root of https://github.com/ylpeach-byte/Fundies and replace the existing files.
-
-Both progression pages have no timers. Bottom Progressions retains three whistles per step: clicks 1, 2 and 3 play whistles; click 4 advances. Navigation, fullscreen, and homepage links remain. No other site pages are changed.
+Upload bottom_progressions.html and offensive_progressions.html to the root of https://github.com/ylpeach-byte/Fundies, replacing existing files. referee-whistle.wav is included as the previously approved 1-second recording; upload it only if not already present. No homepage or Fundies pages are changed. On either progression page: click BLOW WHISTLE or press Space / presenter square to sound the whistle unlimited times. Right/Down goes to next slide, Left/Up goes back, double Up returns to the progression menu, F toggles fullscreen. The Staley Wrestling title links to index.html. Bottom progresses by side (Right then Left). No timers or repetition counters. Preserve the existing homepage attribution for the whistle sound (Robinhood76, CC BY-NC 4.0).
