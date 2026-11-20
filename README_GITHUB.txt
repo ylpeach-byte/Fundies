@@ -1,18 +1,9 @@
-STALEY WRESTLING - GITHUB UPDATE
+STALEY WRESTLING HOMEPAGE UPDATE
 
-Upload to the ROOT of https://github.com/ylpeach-byte/Fundies
+Upload ONLY index.html to the root of https://github.com/ylpeach-byte/Fundies on branch main, replacing the existing index.html.
 
-1. Replace bottom_progressions.html with the included file.
-2. Add offensive_progressions.html if it is not already present (unchanged from previous package).
-3. In your EXISTING index.html, add two cards/links (do not replace the existing homepage):
-   Offensive Progressions: ./offensive_progressions.html
-   Bottom Progressions: ./bottom_progressions.html
-4. Commit changes and wait for GitHub Pages deployment.
+This adds Offensive Progressions and Bottom Progressions to the original four homepage cards. The existing pages and assets are not included or modified.
 
-BOTTOM PROGRESSIONS CONTROLS:
-On every step: click Next or press Right/Down once = whistle rep 1; again = whistle rep 2; again = whistle rep 3; next click advances to the next step (or next side/progression).
-The highlighted card shows the current step. Three numbered circles show whistle progress.
-Left/Up resets the current step's whistle count or goes back a step. Double Up returns to the progression menu.
-Space still starts/pauses the independent 45-second timer; R resets timer; F fullscreen.
+After committing, visit https://www.staleywrestlingpracticetools.com and refresh. Check all six links and remote navigation.
 
-Existing Fundies HTML files are NOT included or changed.
+Note: This update is based on the latest available local homepage copy, not a live download of your current GitHub index.html, which was inaccessible from this environment. Compare before replacing if you have made newer homepage changes, especially fullscreen behavior.

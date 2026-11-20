@@ -32,50 +32,14 @@ a.card:hover,a.card:focus-visible{transform:translateY(-4px);border-color:var(--
 footer{padding:23px 20px;text-align:center;border-top:1px solid #ffffff25;color:var(--muted);font-size:12px;line-height:1.8}
 footer strong{color:#fff}
 @media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}@media(max-width:690px){main{padding:45px 0}.cards{grid-template-columns:1fr}.card{min-height:225px!important}}
- .card.remote-active{outline:4px solid #c9ed6a;outline-offset:4px;background:#1d4e36}.remote-tip{color:#c9ed6a;font-weight:750;font-size:14px;margin:12px 0 18px}
-.fullscreen {
-  margin-inline-start: auto;
-  padding: 10px 14px;
-  border: 1px solid #52785d;
-  border-radius: 10px;
-  background: #194b34;
-  color: var(--lime);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-.fullscreen:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
-.fullscreen:disabled { cursor: default; }
-#homepage { display: contents; }
-#homepage[hidden], #tool-frame[hidden] { display: none; }
-#tool-frame { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #071d15; }
-@media (max-width: 460px) {
-  header { padding: 15px 12px; gap: 9px; flex-wrap: wrap; }
-  .logo { flex: 0 0 36px; height: 36px; }
-  .brand small { font-size: 10px; }
-  .brand strong { font-size: 15px; }
-  .fullscreen { padding: 8px; }
-}
-@media (orientation: landscape) and (max-height: 820px) {
-  :root:is(:fullscreen, .presentation-view) header, :root:is(:fullscreen, .presentation-view) footer { padding-block: 12px; }
-  :root:is(:fullscreen, .presentation-view) main { padding-block: 20px; }
-  :root:is(:fullscreen, .presentation-view) h1 { font-size: clamp(42px, 8vh, 72px); }
-  :root:is(:fullscreen, .presentation-view) a.card { min-height: 140px; padding: 15px 18px; }
-  :root:is(:fullscreen, .presentation-view) .card h2 { margin-block: 7px 4px; }
-  :root:is(:fullscreen, .presentation-view) .open { padding-top: 8px; }
-}
-</style>
+ .card.remote-active{outline:4px solid #c9ed6a;outline-offset:4px;background:#1d4e36}.remote-tip{color:#c9ed6a;font-weight:750;font-size:14px;margin:12px 0 18px} </style>
 </head>
 <body>
-<div id="homepage">
-<header><div class="logo">S</div><div class="brand"><small>STALEY WRESTLING</small><strong>Fundamentals Library</strong></div>
-<button class="fullscreen" id="fullscreen" type="button" title="Enter fullscreen (F)" aria-keyshortcuts="F" hidden>Full Screen</button>
-</header>
+<header><div class="logo">S</div><div class="brand"><small>STALEY WRESTLING</small><strong>Practice Tools Library</strong></div></header>
 <main>
 <div class="kicker">PRACTICE PRESENTATIONS</div>
 <h1>WRESTLING<br><span>FUNDIES.</span></h1>
-<p class="subtitle">Choose a fundamentals session. Introduce each drill, then start the countdown when your wrestlers are ready.</p>
+<p class="subtitle">Choose a presentation or timer for today’s practice.</p>
 <p class="remote-tip">REMOTE: ↑ / ↓ highlight a tool · Square / Enter to open · Double ↑ returns home from any tool</p><section class="cards" aria-label="Fundies presentations">
 <a class="card" href="./staley_neutral_fundies_arrow_controls.html">
 <span class="num">01 / NEUTRAL</span><h2>Neutral Fundies</h2>
@@ -93,138 +57,30 @@ footer strong{color:#fff}
 <span class="open">OPEN TIMERS →</span>
 </a>
 <a class="card" href="./practice_timers.html?mode=partner"><span class="num">04 / PARTNER</span><h2>Partner Timers</h2><p>10 durations · Wrestler A and B<br>Separate start and end whistles</p><span class="open">OPEN PARTNER TIMERS →</span></a>
+<a class="card" href="./offensive_progressions.html">
+<span class="num">05 / OFFENSE</span><h2>Offensive Progressions</h2>
+<p>Snatch · Sweep · High C · Double<br>Step-by-step technique progressions</p>
+<span class="open">OPEN PROGRESSIONS →</span>
+</a>
+<a class="card" href="./bottom_progressions.html">
+<span class="num">06 / BOTTOM</span><h2>Bottom Progressions</h2>
+<p>Quad Pod · Speed Stand Up · Half Defense · Crossface<br>Three whistle-started reps per skill</p>
+<span class="open">OPEN PROGRESSIONS →</span>
+</a>
 </section>
 </main>
 <footer><strong>© 2026 Staley Wrestling. All Rights Reserved.</strong><div>Staley High School Wrestling Program</div></footer>
-</div>
-<iframe id="tool-frame" title="Staley Wrestling practice tool" hidden></iframe>
 <script>
 (function(){
- const cards=[...document.querySelectorAll('a.card')];
- const fullscreen=document.getElementById('fullscreen');
- const homepage=document.getElementById('homepage');
- const frame=document.getElementById('tool-frame');
- const root=document.documentElement;
- const homeUrl=location.href;
- const toolUrls=new Set(cards.map(card=>card.href));
- let selected=0;
- let activeTool=null;
- let toolDocument=null;
-
- function presentationActive(){
-  return !!document.fullscreenElement||root.classList.contains('presentation-view');
- }
- function updateFullscreen(){
-  const active=presentationActive();
-  fullscreen.disabled=active;
-  fullscreen.textContent=active?'Esc to exit':document.fullscreenEnabled?'Full Screen':'Presentation View';
-  if(toolDocument){
-   toolDocument.documentElement.classList.toggle('presentation-view',active);
-   const toolFullscreen=toolDocument.querySelector('#fullscreen, #full');
-   if(toolFullscreen)toolFullscreen.hidden=active;
-  }
- }
- async function enterFullscreen(){
-  if(presentationActive())return;
-  if(document.fullscreenEnabled){
-   try{await root.requestFullscreen()}
-   catch{root.classList.add('presentation-view')}
-  }else{
-   root.classList.add('presentation-view');
-  }
-  updateFullscreen();
- }
- function handleFullscreenKey(event){
-  if(event.altKey||event.ctrlKey||event.metaKey)return false;
-  if(event.key==='Escape'&&root.classList.contains('presentation-view')){
-   event.preventDefault();
-   root.classList.remove('presentation-view');
-   updateFullscreen();
-   return true;
-  }
-  if(event.key.toLowerCase()!=='f')return false;
-  event.preventDefault();
-  if(!event.repeat)enterFullscreen();
-  return true;
- }
-
- function showPage(toolUrl){
-  if(toolUrl===activeTool)return;
-  activeTool=toolUrl;
-  toolDocument=null;
-  homepage.hidden=!!toolUrl;
-  frame.hidden=!toolUrl;
-  frame.contentWindow.location.replace(toolUrl||'about:blank');
-  if(!toolUrl){
-   document.activeElement?.blur();
-   window.focus();
-  }
- }
- function openTool(url){
-  if(!presentationActive()){
-   location.href=url;
-   return;
-  }
-  // Keep the fullscreen document mounted while the selected tool loads.
-  history.pushState({staleyTool:url},'',url);
-  showPage(url);
- }
- function plainClick(event){
-  return event.button===0&&!event.altKey&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey;
- }
- for(const card of cards){
-  card.addEventListener('click',event=>{
-   if(!presentationActive()||!plainClick(event))return;
-   event.preventDefault();
-   openTool(card.href);
-  });
- }
- window.addEventListener('popstate',event=>{
-  const url=event.state?.staleyTool;
-  showPage(toolUrls.has(url)?url:null);
- });
- frame.addEventListener('load',()=>{
-  if(!activeTool||frame.contentWindow.location.href!==activeTool)return;
-  toolDocument=frame.contentDocument;
-  updateFullscreen();
-  toolDocument.addEventListener('click',event=>{
-   if(!plainClick(event))return;
-   if(event.target.closest('#fullscreen, #full')){
-    event.stopImmediatePropagation();
-    enterFullscreen();
-    return;
-   }
-   const homeLink=event.target.closest('a[href="./index.html"]');
-   if(!homeLink)return;
-   event.preventDefault();
-   history.pushState(null,'',homeUrl);
-   showPage(null);
-  },true);
-  toolDocument.addEventListener('keydown',event=>{
-   if(handleFullscreenKey(event))event.stopImmediatePropagation();
-  },true);
-  frame.contentWindow.focus();
- });
-
- fullscreen.hidden=false;
- fullscreen.addEventListener('click',enterFullscreen);
- document.addEventListener('fullscreenchange',updateFullscreen);
- updateFullscreen();
+ const cards=[...document.querySelectorAll('a.card')];let selected=0;
  function render(){cards.forEach((c,i)=>{c.classList.toggle('remote-active',i===selected);c.setAttribute('aria-current',i===selected?'true':'false')})}
  function move(n){selected=(selected+n+cards.length)%cards.length;render()}
+ function open(){location.href=cards[selected].href}
  document.addEventListener('keydown',e=>{
   if(e.altKey||e.ctrlKey||e.metaKey)return;
-  if(handleFullscreenKey(e))return;
-  const previous=['ArrowLeft','PageUp','ArrowUp'].includes(e.key);
-  if(previous||['ArrowRight','PageDown','ArrowDown'].includes(e.key)){
-   e.preventDefault();
-   if(e.target.closest('a,button'))e.target.blur();
-   if(!e.repeat)move(previous?-1:1);
-  }
-  else if(['Tab','Enter',' '].includes(e.key)){
-   if((e.shiftKey&&e.key==='Tab')||e.target.closest('a,button'))return;
-   e.preventDefault();if(!e.repeat)openTool(cards[selected].href)
-  }
+  if(['ArrowLeft','PageUp','ArrowUp'].includes(e.key)){e.preventDefault();if(!e.repeat)move(-1)}
+  else if(['ArrowRight','PageDown','ArrowDown'].includes(e.key)){e.preventDefault();if(!e.repeat)move(1)}
+  else if(['Tab','Enter',' '].includes(e.key)){e.preventDefault();if(!e.repeat)open()}
  });
  render();
 })();
